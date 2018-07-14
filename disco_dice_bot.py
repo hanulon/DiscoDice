@@ -10,6 +10,17 @@ def get_bot_credentials(bot_creds_file):
     return read_lines
 
 
+def respond_to_command(message):
+    args = message.upper().split(" ")
+    print(args)
+    if args[0] == '/ROLL' or args[0] == '/R':
+        argument = "".join(args[1:])
+        return dice_roller.get_response_to_formula(argument)
+    if args[0] == '/HELP':
+        return "Type: /roll 3d20+3"
+    return None
+
+
 if __name__ == "__main__":
     Client = discord.Client()
     client = commands.Bot(command_prefix="?")
@@ -21,15 +32,9 @@ if __name__ == "__main__":
 
     @client.event
     async def on_message(message):
-        args = message.content.upper().split(" ")
-        print(args)
-        if args[0] == '/ROLL' or args[0] == '/R':
-            argument = "".join(args[1:])
-            result = dice_roller.get_response_to_formula(argument)
-            await client.send_message(message.channel, result)
-        if args[0] == '/HELP':
-            await client.send_message(message.channel, "Type: /roll 3d20+3")
-
+        response = respond_to_command(message.content)
+        if response is not None:
+            await client.send_message(message.channel, response)
 
     client.run(bot_token)
 
