@@ -9,6 +9,7 @@ def get_bot_credentials(bot_creds_file):
     file.close()
     return read_lines
 
+
 if __name__ == "__main__":
     Client = discord.Client()
     client = commands.Bot(command_prefix="?")
@@ -24,7 +25,7 @@ if __name__ == "__main__":
         print(args)
         if args[0] == '/ROLL' or args[0] == '/R':
             argument = "".join(args[1:])
-            result = dice_roller.rollCommandReturnResponse(argument)
+            result = dice_roller.get_complex_command_dice_rolls(argument)
             await client.send_message(message.channel, result)
         if args[0] == '/HELP':
             await client.send_message(message.channel, "Type: /roll 3d20+3")

@@ -1,12 +1,12 @@
 from random import randint
 
 
-def rollCommandReturnResponse(argument):
+def get_complex_command_dice_rolls(argument):
     dies = argument.split("+")
     dice_results = []
     try:
         for dice in dies:
-            out_d = getRollSubresult(dice)
+            out_d = get_simple_command_dice_roll(dice)
             dice_results.append(out_d)
         print(dice_results)
         result = "rolled  %s\n" % argument.lower()
@@ -27,7 +27,8 @@ def rollCommandReturnResponse(argument):
     except:
         return "There was an error with the command."
 
-def getRollSubresult(dice_coded):
+
+def get_simple_command_dice_roll(dice_coded):
     if 'D' in dice_coded:
         ddd = dice_coded.split("D")
         try:
@@ -43,16 +44,18 @@ def getRollSubresult(dice_coded):
                 number_of_dies = int(ddd[0])
             except:
                 raise ValueError('Forbidden number of dies: %s' % (ddd[0]))
-        return rollNDies(number_of_dies, sides_of_die)
+        return roll_dice_n_times(number_of_dies, sides_of_die)
     else:
         return int(dice_coded)
 
-def rollNDies(N, sides_number):
+
+def roll_dice_n_times(n, sides_number):
     rolls_results = []
-    for i in range(N):
-        out_one_d = rollDiceOnce(sides_number)
+    for i in range(n):
+        out_one_d = roll_dice(sides_number)
         rolls_results.append(out_one_d)
     return rolls_results
 
-def rollDiceOnce(sides_number):
+
+def roll_dice(sides_number):
     return randint(1, sides_number)
