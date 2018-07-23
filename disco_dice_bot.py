@@ -63,9 +63,9 @@ class DiscoDiceBot:
 
     def get_bot_token(self):
         file = open(self.bot_creds_file, "r")
-        read_lines = [line.strip() for line in file.readlines()]
+        read_line = file.readline()
         file.close()
-        return read_lines[0]
+        return read_line
 
 
 if __name__ == "__main__":
