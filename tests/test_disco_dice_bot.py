@@ -28,9 +28,10 @@ class TestDiscoDiceBot(TestCase):
     def test_respond_to_command_macro_without_arguments(self):
         ddbot = disco.DiscoDiceBot("test_string")
         command = "/MACRO"
-        expected = "Macros in memory:\nroll20 :\t/roll d20"
+        expected = "Macros in memory:\nroll20\ndice4"
 
         ddbot.get_macros_command_response(["DEFINE", "ROLL20", "/roll d20"])
+        ddbot.get_macros_command_response(["DEFINE", "DICE4", "/roll d4"])
         response = ddbot.respond_to_command(command)
 
         self.assertEqual(expected, response)
@@ -49,7 +50,7 @@ class TestDiscoDiceBot(TestCase):
         ddbot = disco.DiscoDiceBot("test_string")
         arguments = ["CLEAR", "ALL"]
         expected_response = "Purged all macros from the memory."
-        expected_macros_listing = "Macros in memory:"
+        expected_macros_listing = "Macros in memory:\n"
 
         ddbot.get_macros_command_response(["DEFINE", "ROLL20", "/roll d20"])
         actual_response = ddbot.get_macros_command_response(arguments)
@@ -84,7 +85,7 @@ class TestDiscoDiceBot(TestCase):
     def test_get_macros_command_response_on_clear(self):
         ddbot = disco.DiscoDiceBot("test_string")
         arguments = ["CLEAR", "ROLL20"]
-        expected_response = "Macros in memory:"
+        expected_response = "Macros in memory:\n"
 
         ddbot.get_macros_command_response(["DEFINE", "ROLL20", "/roll d20"])
         actual_response = ddbot.get_macros_command_response(arguments)

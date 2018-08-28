@@ -41,11 +41,9 @@ class DiscoDiceBot:
 
     def get_macros_command_response(self, args):
         if args.__len__() == 0:
-            return self.macros_agent.get_all_macros_aliases()
+            return self.get_macros_in_memory_listed()
         elif args.__len__() == 1:
-            if args[0] == 'CLEAR_ALL':
-                self.macros_agent.forget_all_macros()
-            elif args[0] == 'SAVE':
+            if args[0] == 'SAVE':
                 self.macros_agent.save_macros_to_file(self.macros_store_path)
             elif args[0] == 'LOAD':
                 self.macros_agent.load_macros_from_file(self.macros_store_path)
@@ -54,12 +52,21 @@ class DiscoDiceBot:
         else:
             if args[0] == 'DEFINE':
                 self.macros_agent.define_macro(args[1], " ".join(args[2:]))
-                return self.macros_agent.get_all_macros_aliases()
+                return self.get_macros_in_memory_listed()
             if args[0] == 'REDEFINE':
                 self.macros_agent.redefine_macro(args[1], " ".join(args[2:]))
-                return self.macros_agent.get_all_macros_aliases()
+                return "Redefined macro: {0} to '{1}'.\n\n{2}".format(
+                    args[1].lower(), " ".join(args[2:]).lower(), self.get_macros_in_memory_listed())
             if args[0] == 'CLEAR':
-                self.macros_agent.forget_macro(args[1])
+                if args[1] == 'ALL':
+                    self.macros_agent.forget_all_macros()
+                    return "Purged all macros from the memory."
+                else:
+                    self.macros_agent.forget_macro(args[1])
+                    return self.get_macros_in_memory_listed()
+
+    def get_macros_in_memory_listed(self):
+        return "Macros in memory:\n" + "\n".join(m.lower() for m in self.macros_agent.get_all_macros_aliases())
 
     def get_bot_token(self):
         file = open(self.bot_creds_file, "r")
