@@ -4,6 +4,10 @@ import os
 
 
 class TestDiscoDiceBot(TestCase):
+    def test_creating_and_closing_the_bot(self):
+        ddbot = disco.DiscoDiceBot("test_string")
+        ddbot.respond_to_command('/DIE')
+
     def test_get_bot_token(self):
         bot_credentials_filename = "bot_credentials.txt"
         file_creds = open(bot_credentials_filename, "w")

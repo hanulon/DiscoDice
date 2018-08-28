@@ -4,15 +4,15 @@ import dice_roller
 import macros_agent
 
 
-class DiscoDiceBot:
+class DiscoDiceBot(discord.Client):
     def __init__(self, bot_credentials_file):
+        super().__init__()
         self.bot_creds_file = bot_credentials_file
         self.macros_store_path = "my_macros.json"
         self.macros_agent = macros_agent.MacrosAgent()
         self.help_text = "Type: /roll 3d20+3"
 
     def run(self):
-        Client = discord.Client()
         client = commands.Bot(command_prefix="?")
 
         @client.event
@@ -37,6 +37,8 @@ class DiscoDiceBot:
             return self.get_macros_command_response(args)
         if command in ['/HELP', '/H']:
             return self.help_text
+        if command == '/DIE':
+            self.close()
         return None
 
     def get_macros_command_response(self, args):
@@ -70,7 +72,7 @@ class DiscoDiceBot:
 
     def get_bot_token(self):
         file = open(self.bot_creds_file, "r")
-        read_line = file.readline()
+        read_line = file.readline().replace("\n", "")
         file.close()
         return read_line
 
