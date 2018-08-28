@@ -10,7 +10,14 @@ class DiscoDiceBot(discord.Client):
         self.bot_creds_file = bot_credentials_file
         self.macros_store_path = "my_macros.json"
         self.macros_agent = macros_agent.MacrosAgent()
-        self.help_text = "Type: /roll 3d20+3"
+        self.help_text = "Welcome to the DiscoDiceBot! Every command starts with forward slash ( / ).\n" \
+                         "Possible commands:\n" \
+                         "/roll - allows you to roll the dice, with formula format as in roll20\n" \
+                         "\tExample: /roll 3d20+3\n" \
+                         "/macro - allows to define, use, list, save and clear the macros.\n" \
+                         "\tExamples: (1) /macro (2) /macro define roll20 /roll d20, then type: /macro roll20.\n" \
+                         "\tSubcommands: save, load, define, redefine, clear, clear all\n" \
+                         "/help - shows this text."
 
     def run(self):
         client = commands.Bot(command_prefix="?")
